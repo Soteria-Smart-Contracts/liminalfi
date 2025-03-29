@@ -1,5 +1,6 @@
 :root {
 	--main-color: #05191f;
+	--main-transparent: #05191f6b;
 	--primary-color: #36b6ac;
 	--secondary-color: #7aca88;
 
@@ -59,10 +60,34 @@ nav {
 	font-family: "Neuropolitical";
 }
 
+.color-third {
+	color: var(--third-color);
+}
+
+.background-main-transparent {
+	background-color: var(--main-transparent);
+}
+
 main {
 	min-height: 80%;
 }
 
+#you-receive {
+	width: 51%;
+
+	@media (max-width: 600px) {
+		width: 88%;
+	}
+}
+
+#to-address {
+	width: 48%;
+
+	@media (max-width: 600px) {
+		margin-top: 8px;
+		width: 88%;
+	}
+}
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
 	-webkit-appearance: none;

@@ -48,74 +48,91 @@
 
 
         <div class="d-flex flex-column gap-3 mb-3">
-          <form class="row g-5 align-items-center">
-            <div class="col-6 col-m-5">
-              <label for="select-chainA" class="form-label">From</label>
-              <select class="form-select" id="select-chainA" aria-label="Select token">
-                <option selected>Network A</option>
-                <option value="ETH">ETH</option>
-                <option value="BTC">ETC</option>
-                <option value="USDC">Base</option>
-                <option value="USDT">BNB</option>
-              </select>
+          <form class="row align-items-center">
+            <div class="col-6 col-md-5">
+              <div class="background-main-transparent border rounded-4 p-2">
+                <label for="select-chainA" class="form-label">From</label>
+                <select class="form-select" id="select-chainA" aria-label="Select token">
+                  <option selected>Network A</option>
+                  <option value="ETH">Ethereum Classic</option>
+                  <option value="USDC">Base</option>
+                  <option value="USDT">BNB</option>
+                </select>
+              </div>
             </div>
 
-
-            <div class="col-2 d-m-block d-none">
-              <button type="button" class="btn btn-primary " disabled> -> </button>
+            <div class="col-2 d-md-flex justify-content-center d-none align-bottom">
+              <button type="button" class="btn btn-primary mx-auto mt-1">
+                <svg xmlns=" http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                </svg>
+              </button>
             </div>
 
-            <div class="col-6  col-m-5">
-              <label for="select-chainB" class="form-label">To</label>
-              <select class="form-select" id="select-chainB" aria-label="Select token">
-                <option selected>Network B</option>
-                <option value="ETH">Ethereum</option>
-                <option value="BTC">Ethereum Classic</option>
-                <option value="USDC">Base</option>
-                <option value="USDT">BNB</option>
-              </select>
+            <div class="col-6 col-md-5 ">
+              <div class="background-main-transparent border rounded-4 p-2">
+                <label for="select-chainB" class="form-label">To</label>
+                <select class="form-select" id="select-chainB" aria-label="Select token">
+                  <option selected>Network B</option>
+                  <option value="ETH">Ethereum</option>
+                  <option value="BTC">Ethereum Classic</option>
+                  <option value="USDC">Base</option>
+                  <option value="USDT">BNB</option>
+                </select>
+              </div>
             </div>
           </form>
         </div>
 
-        <div class="row ">
-          <div class="col">
-            <label for="floatingInput">You send</label>
-            <input type="number" class="form-control no-arrows" id="floatingInput" placeholder="0">
-          </div>
-
-          <div class="col">
-            <label for="select-token">Token</label>
-            <select class="form-select" id="select-token" aria-label="Default select example">
-              <option selected>Choose token</option>
-              <option value="ETH">ETH</option>
-              <option value="BTC">wBTC</option>
-              <option value="USDC">USDC</option>
-              <option value="USDT">USDT</a></option>
-            </select>
-          </div>
-
-
-          <div class="d-flex flex-row justify-content-between mt-3">
-            <div class="border rounded-1 p-2" style="width: 58%;">
-              <p> You receive</p>
-
-              <span>Amount</span>
+        <div class="border rounded-4 p-2 background-main-transparent">
+          <div class="row">
+            <div class="col">
+              <label for="floatingInput" class="color-third">You send</label>
+              <input type="number" class="form-control no-arrows" id="floatingInput" placeholder="0">
             </div>
 
-            <div class="border rounded-1 p-2" style="width: 32%;">
-              <p> To address</p>
-
-              <span>Address</span>
+            <div class="col mt-auto">
+              <select class="form-select " id="select-token" aria-label="Default select example">
+                <option selected>Choose token</option>
+                <option value="ETH">ETH</option>
+                <option value="BTC">wBTC</option>
+                <option value="USDC">USDC</option>
+                <option value="USDT">USDT</a></option>
+              </select>
             </div>
           </div>
 
-          <div class="w-50 mx-auto mt-3">
-            <button type="button" class="btn btn-primary w-100 fw-bold"> Send </button>
+          <div class="row mt-1 color-third" style="font-size: 10px;">
+            <div class="col">
+              $Value in USD
+            </div>
+
+            <div class="col">
+              Balance: XXX $Token
+            </div>
           </div>
         </div>
+
+        <div class="d-flex flex-md-row flex-column justify-content-between mt-2">
+          <div id="you-receive" class="border rounded-4 p-2 background-main-transparent">
+            <p> You receive</p>
+
+            <span>Amount</span>
+          </div>
+
+          <div id="to-address" class="border rounded-4 p-2 background-main-transparent">
+            <p> To address</p>
+
+            <span>Address</span>
+          </div>
+        </div>
+
+        <div class="w-50 mx-auto mt-3">
+          <button type="button" class="btn btn-primary w-100 fw-bold"> Send </button>
+        </div>
       </div>
-    </div>
     </div>
   </main>
   <footer class="text-center">
