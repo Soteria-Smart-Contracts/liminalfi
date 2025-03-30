@@ -51,18 +51,47 @@
           <form class="row align-items-center">
             <div class="col-6 col-md-5 pe-1 pe-md-1">
               <label for="select-chainA" class="form-label color-third" style="font-size:11px">From</label>
-              <select class="form-select" id="select-chainA" aria-label="Select token">
-                <option selected>Network A</option>
-                <option value="ETH">Ethereum</option>
-                <option value="ETH">Ethereum Classic</option>
-                <option value="USDC">Base</option>
-                <option value="USDT">BNB</option>
-              </select>
+              <div class="dropdown custom-dropdown  main-transparent-hover">
+                <button
+                  class="btn form-select main-transparent-hover dropdown-toggle d-flex align-items-center overflow-x-hidden"
+                  type="button" id="dropdownChainA" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="/static/img/ethereum.svg" alt="Ethereum logo" class="dropdown-icon me-2" />
+                  <span>Ethereum</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownChainA">
+                  <li data-value="ETH">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/ethereum.svg" alt="Ethereum logo" class="dropdown-icon me-2" />
+                      Ethereum
+                    </a>
+                  </li>
+                  <li data-value="ETC">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/etc.svg" alt="Ethereum Classic logo" class="dropdown-icon me-2" />
+                      Ethereum Classic
+                    </a>
+                  </li>
+                  <li data-value="BASE">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/base.svg" alt="Base logo" class="dropdown-icon me-2" />
+                      Base
+                    </a>
+                  </li>
+                  <li data-value="BNB">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/bnb.svg" alt="BNB logo" class="dropdown-icon me-2" />
+                      BNB
+                    </a>
+                  </li>
+                </ul>
+                <input type="hidden" id="select-chainA" name="chainA" value="ETH">
+              </div>
             </div>
 
             <div class="col-2 d-md-flex justify-content-center d-none align-bottom">
-              <button type="button" class="btn btn-primary mx-auto mt-1">
-                <svg xmlns=" http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              <button type="button" id="switch-chains-btn"
+                class="btn border-subtle background-main-transparent main-transparent-hover rounded-4 color-third mx-auto mt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                   class="bi bi-arrow-right" viewBox="0 0 16 16">
                   <path fill-rule="evenodd"
                     d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
@@ -72,18 +101,48 @@
 
             <div class="col-6 col-md-5 ps-1 ps-md-1">
               <label for="select-chainB" class="form-label color-third" style="font-size:11px">To</label>
-              <select class="form-select" id="select-chainB" aria-label="Select token">
-                <option selected>Network B</option>
-                <option value="ETH">Ethereum</option>
-                <option value="BTC">Ethereum Classic</option>
-                <option value="USDC">Base</option>
-                <option value="USDT">BNB</option>
-              </select>
+
+              <div class="dropdown custom-dropdown">
+                <button
+                  class="btn form-select main-transparent-hover dropdown-toggle d-flex align-items-center overflow-x-hidden"
+                  type="button" id="dropdownChainB" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="/static/img/etc.svg" alt="Ethereum Classic logo" class="dropdown-icon me-2" />
+                  <span>Ethereum Classic</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownChainB">
+                  <li data-value="ETH">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/ethereum.svg" alt="Ethereum logo" class="dropdown-icon me-2" />
+                      Ethereum
+                    </a>
+                  </li>
+                  <li data-value="ETC">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/etc.svg" alt="Ethereum Classic logo" class="dropdown-icon me-2" />
+                      Ethereum Classic
+                    </a>
+                  </li>
+                  <li data-value="BASE">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/base.svg" alt="Base logo" class="dropdown-icon me-2" />
+                      Base
+                    </a>
+                  </li>
+                  <li data-value="BNB">
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                      <img src="/static/img/bnb.svg" alt="BNB logo" class="dropdown-icon me-2" />
+                      BNB
+                    </a>
+                  </li>
+                </ul>
+                <input type="hidden" id="select-chainB" name="chainB" value="ETC">
+              </div>
             </div>
           </form>
+
         </div>
 
-        <div class="border-subtle rounded-4 p-2 background-main-transparent">
+        <div class="border-subtle rounded-4 p-2 background-main-transparent main-transparent-hover">
           <div class="row">
             <div class="col">
               <label for="floatingInput" class="color-third">You send</label>
@@ -91,13 +150,36 @@
             </div>
 
             <div class="col  mt-auto">
-              <select class="form-select ms-auto" id="select-token" aria-label="Default select example">
-                <!-- <option >Choose token</option> -->
-                <option selected value="ETH">ETH</option>
-                <option value="BTC">wBTC</option>
-                <option value="USDC">USDC</option>
-                <option value="USDT">USDT</a></option>
-              </select>
+              <div class="dropdown d-flex justify-content-end">
+                <button class="btn main-transparent-hover dropdown-toggle" type="button" id="select-token-btn"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="/static/img/ethereum.svg" alt="ETH logo" class="dropdown-icon me-2" /> ETH
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="select-token-btn">
+                  <li>
+                    <a class="dropdown-item" href="#" id="token-ETH" data-value="ETH"
+                      data-img="/static/img/ethereum.svg">
+                      <img src="/static/img/ethereum.svg" alt="ETH logo" class="dropdown-icon me-2" /> ETH
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" id="token-BTC" data-value="BTC" data-img="/static/img/btc.svg">
+                      <img src="/static/img/btc.svg" alt="BTC logo" class="dropdown-icon me-2" /> wBTC
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" id="token-USDC" data-value="USDC" data-img="/static/img/usdc.svg">
+                      <img src="/static/img/usdc.svg" alt="USDC logo" class="dropdown-icon me-2" /> USDC
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" id="token-USDT" data-value="USDT" data-img="/static/img/usdt.svg">
+                      <img src="/static/img/usdt.svg" alt="USDT logo" class="dropdown-icon me-2" /> USDT
+                    </a>
+                  </li>
+                </ul>
+                <input type="hidden" id="selected-token" value="ETH">
+              </div>
             </div>
           </div>
 
@@ -121,7 +203,7 @@
             <span>Amount</span>
           </div>
 
-          <div id="to-address" class="border-subtle rounded-4 p-2 background-main-transparent">
+          <div id="to-address" class="border-subtle rounded-4 p-2 background-main-transparent main-transparent-hover">
             <p class="color-third" style="font-size: 10px;">To address</p>
 
             <span>Address</span>
@@ -137,6 +219,56 @@
   <footer class="text-center">
     &copy; 2025 Liminal Bridge
   </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
+        const button = dropdown.querySelector(".dropdown-toggle");
+        const hiddenInput = dropdown.querySelector("input[type=hidden]");
+        const items = dropdown.querySelectorAll(".dropdown-item");
+
+        items.forEach(item => {
+          item.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            const value = item.getAttribute("data-value");
+            const text = item.textContent.trim();
+            const imgSrc = item.querySelector("img").src;
+
+            if (item.id.includes("token-")) {
+              dropdownBtn.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /> ${text}`;
+            } else {
+              button.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /><span>${text}</span>`;
+            }
+
+            hiddenInput.value = value;
+          });
+        });
+      });
+
+      const dropdownBtn = document.getElementById("select-token-btn");
+      const hiddenInput = document.getElementById("selected-token");
+      const items = document.querySelectorAll(".dropdown-item");
+
+      items.forEach(item => {
+        item.addEventListener("click", function (event) {
+          event.preventDefault();
+
+          const value = this.getAttribute("data-value");
+          const imgSrc = this.getAttribute("data-img");
+          const text = this.textContent.trim();
+
+          if (item.id.includes("token-")) {
+            dropdownBtn.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /> ${text}`;
+          } else {
+            button.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /><span>${text}</span>`;
+          }
+
+          hiddenInput.value = value;
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

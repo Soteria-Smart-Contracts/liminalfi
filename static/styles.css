@@ -79,6 +79,13 @@ main {
 	min-height: 80%;
 }
 
+.main-transparent-hover {
+	&:hover {
+		border: 1.2px solid dimgrey;
+		background-color: #05191fc4 !important;
+	}
+}
+
 #connect-btn {
 	background-color: var(--primary-color);
 }
@@ -127,6 +134,13 @@ input[type="number"]::-webkit-inner-spin-button {
 	margin: 0;
 }
 
+option {
+	background-color: var(--main-color);
+	&:hover {
+		background-color: red;
+	}
+}
+
 select {
 	appearance: none !important;
 	-webkit-appearance: none !important;
@@ -143,10 +157,12 @@ select {
 	cursor: pointer !important;
 }
 
-#select-token {
+#select-token-btn {
+	color: white;
 	background-color: #021627b5 !important;
 	text-align: start;
 	width: 7rem;
+	height: 3rem;
 	border-radius: 4rem !important;
 }
 
@@ -160,6 +176,54 @@ select {
 select:focus {
 	border-color: #256e9d;
 	outline: none;
+}
+.custom-dropdown {
+	background-color: var(--main-transparent) !important;
+	border: 1px solid var(--color-subtle) !important;
+	border-radius: 1rem !important;
+	position: relative;
+	width: 100%;
+	height: 4rem;
+	display: flex;
+
+	ul {
+		width: 11.5rem;
+	}
+}
+
+.custom-dropdown .dropdown-toggle::after {
+	display: none !important;
+}
+
+#dropdownChainA,
+#dropdownChainB {
+	font-weight: 600 !important;
+	color: #fff !important;
+}
+
+.dropdown-icon {
+	width: 20px;
+	height: 20px;
+}
+
+.dropdown-menu {
+	background-color: #05191f;
+	width: 100%;
+}
+
+.dropdown-item {
+	color: #fff !important;
+	height: 40px;
+
+	&:hover {
+		color: var(--main-color) !important;
+	}
+}
+
+.dropdown-item img {
+	color: #fff !important;
+	width: 20px;
+	height: 20px;
 }
 
 .bridge-box {
