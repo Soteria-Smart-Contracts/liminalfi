@@ -2,7 +2,9 @@
 	--main-color: #05191f;
 	--main-transparent: #05191f6b;
 	--primary-color: #36b6ac;
+	--primary-transparent: #1a4c48a6;
 	--secondary-color: #7aca88;
+	--secondary-transparent: #7aca88bf;
 
 	--third-color: #697579;
 	--fourth-color: #86d3cd;
@@ -86,8 +88,27 @@ main {
 	}
 }
 
+table {
+	* {
+		color: white !important;
+		background-color: #585a5b1c !important;
+	}
+}
+
+.nav-link {
+	&:hover {
+		color: aliceblue !important;
+		filter: drop-shadow(0px 0px 2px var(--secondary-color)) !important;
+	}
+}
+
 #connect-btn {
+	border: 1px solid var(--primary-transparent);
 	background-color: var(--primary-color);
+
+	&:hover {
+		border: 1.3px solid var(--secondary-transparent);
+	}
 }
 
 #send-tx-btn {
