@@ -309,7 +309,22 @@
     }
 
     function handleSwitchChainsClick() {
-      console.log("click!")
+      const chainSelectorA = document.getElementById("dropdownChainA")
+      const buttonA = chainSelectorA.querySelector(".dropdown-toggle");
+      const hiddenInputA = chainSelectorA.querySelector("input[type=hidden]");
+
+      const chainSelectorB = document.getElementById("dropdownChainB")
+      const buttonB = chainSelectorB.querySelector(".dropdown-toggle");
+      const hiddenInputB = chainSelectorB.querySelector("input[type=hidden]");
+
+      const tempValue = hiddenInputA.value;
+      const tempButtonHTML = buttonA.innerHTML;
+
+      hiddenInputA.value = hiddenInputB.value;
+      buttonA.innerHTML = buttonB.innerHTML;
+
+      hiddenInputB.value = tempValue;
+      buttonB.innerHTML = tempButtonHTML;
     }
 
     document.addEventListener("DOMContentLoaded", function () {
