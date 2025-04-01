@@ -73,34 +73,34 @@
           <form class="row align-items-center">
             <div class="col-6 col-md-5 pe-1 pe-md-1">
               <label for="select-chainA" class="form-label color-third" style="font-size:11px">From</label>
-              <div class="dropdown custom-dropdown  main-transparent-hover">
+              <div class="dropdown custom-dropdown1  main-transparent-hover" id="dropdownChainA">
                 <button
                   class="btn form-select main-transparent-hover dropdown-toggle d-flex align-items-center overflow-x-hidden"
-                  type="button" id="dropdownChainA" data-bs-toggle="dropdown" aria-expanded="false">
+                  type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <img src="/static/img/ethereum.svg" alt="Ethereum logo" class="dropdown-icon me-2" />
                   <span>Ethereum</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownChainA">
-                  <li data-value="ETH">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li style="display: none;">
+                    <a data-value="ETH" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/ethereum.svg" alt="Ethereum logo" class="dropdown-icon me-2" />
                       Ethereum
                     </a>
                   </li>
-                  <li data-value="ETC">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li style="display: none;">
+                    <a data-value="ETC" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/etc.svg" alt="Ethereum Classic logo" class="dropdown-icon me-2" />
                       Ethereum Classic
                     </a>
                   </li>
-                  <li data-value="BASE">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li>
+                    <a data-value="BASE" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/base.svg" alt="Base logo" class="dropdown-icon me-2" />
                       Base
                     </a>
                   </li>
-                  <li data-value="BNB">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li>
+                    <a data-value="BNB" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/bnb.svg" alt="BNB logo" class="dropdown-icon me-2" />
                       BNB
                     </a>
@@ -111,8 +111,10 @@
             </div>
 
             <div class="col-2 d-md-flex justify-content-center d-none align-bottom">
-              <button type="button" id="switch-chains-btn"
-                class="btn border-subtle background-main-transparent main-transparent-hover rounded-4 color-third mx-auto mt-4">
+              <button type="button" id="switch-chains-btn" data-bs-toggle="popover" data-bs-trigger="hover"
+                data-bs-placement="top" data-bs-content="Switch chains"
+                class="btn border-subtle background-main-transparent main-transparent-hover rounded-4 color-third mx-auto mt-4"
+                onclick="handleSwitchChainsClick()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                   class="bi bi-arrow-right" viewBox="0 0 16 16">
                   <path fill-rule="evenodd"
@@ -124,34 +126,34 @@
             <div class="col-6 col-md-5 ps-1 ps-md-1">
               <label for="select-chainB" class="form-label color-third" style="font-size:11px">To</label>
 
-              <div class="dropdown custom-dropdown">
+              <div class="dropdown custom-dropdown2" id="dropdownChainB">
                 <button
                   class="btn form-select main-transparent-hover dropdown-toggle d-flex align-items-center overflow-x-hidden"
-                  type="button" id="dropdownChainB" data-bs-toggle="dropdown" aria-expanded="false">
+                  type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <img src="/static/img/etc.svg" alt="Ethereum Classic logo" class="dropdown-icon me-2" />
                   <span>Ethereum Classic</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownChainB">
-                  <li data-value="ETH">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li style="display: none;">
+                    <a data-value="ETH" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/ethereum.svg" alt="Ethereum logo" class="dropdown-icon me-2" />
                       Ethereum
                     </a>
                   </li>
-                  <li data-value="ETC">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li style="display: none;">
+                    <a data-value="ETC" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/etc.svg" alt="Ethereum Classic logo" class="dropdown-icon me-2" />
                       Ethereum Classic
                     </a>
                   </li>
-                  <li data-value="BASE">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li>
+                    <a data-value="BASE" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/base.svg" alt="Base logo" class="dropdown-icon me-2" />
                       Base
                     </a>
                   </li>
-                  <li data-value="BNB">
-                    <a class="dropdown-item d-flex align-items-center" href="#">
+                  <li>
+                    <a data-value="BNB" class="dropdown-item d-flex align-items-center" href="#">
                       <img src="/static/img/bnb.svg" alt="BNB logo" class="dropdown-icon me-2" />
                       BNB
                     </a>
@@ -172,9 +174,9 @@
             </div>
 
             <div class="col  mt-auto">
-              <div class="dropdown d-flex justify-content-end">
-                <button class="btn main-transparent-hover dropdown-toggle" type="button" id="select-token-btn"
-                  data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="dropdown d-flex justify-content-end select-token-btn">
+                <button class="btn main-transparent-hover dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
                   <img src="/static/img/ethereum.svg" alt="ETH logo" class="dropdown-icon me-2" /> ETH
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="select-token-btn">
@@ -253,52 +255,69 @@
         }
       });
     });
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
+
+    function setupDropdown(selector, updateButton) {
+      document.querySelectorAll(selector).forEach(dropdown => {
         const button = dropdown.querySelector(".dropdown-toggle");
         const hiddenInput = dropdown.querySelector("input[type=hidden]");
-        const items = dropdown.querySelectorAll(".dropdown-item");
+        const oppositeDropdownId = dropdown.id === "dropdownChainA" ? "dropdownChainB" : "dropdownChainA";
 
-        items.forEach(item => {
-          item.addEventListener("click", (event) => {
-            event.preventDefault();
-
-            const value = item.getAttribute("data-value");
+        dropdown.querySelectorAll(".dropdown-item").forEach(item => {
+          item.addEventListener("click", (e) => {
+            e.preventDefault();
+            const value = item.getAttribute("data-value").trim();
             const text = item.textContent.trim();
-            const imgSrc = item.querySelector("img").src;
+            const imgSrc = item.querySelector("img")?.src || item.getAttribute("data-img");
 
-            if (item.id.includes("token-")) {
-              dropdownBtn.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /> ${text}`;
-            } else {
-              button.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /><span>${text}</span>`;
+            if (updateButton) {
+              button.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" />${text}`;
+
+              const toggleItemInDropdown = (dropdownID) => {
+                const currentDropdown = document.getElementById(dropdownID)
+                const oppositeDropdown = document.getElementById(oppositeDropdownId);
+                const oppositeHiddenInput = oppositeDropdown.querySelector("input[type=hidden]");
+                const dropdownItems = currentDropdown.querySelectorAll(".dropdown-item")
+                const oppositeItems = oppositeDropdown ? oppositeDropdown.querySelectorAll(".dropdown-item") : [];
+
+                oppositeItems.forEach(item => {
+                  const itemValue = item.getAttribute("data-value").trim();
+                  item.parentElement.style.display = "block"
+
+                  if (itemValue === value || itemValue === oppositeHiddenInput.value) {
+                    item.parentElement.style.display = "none"
+                  }
+                });
+
+                dropdownItems.forEach((dropdownItem, index) => {
+                  const itemValue = dropdownItem.getAttribute("data-value").trim();
+                  const oppositeValue = oppositeHiddenInput.value.trim();
+                  dropdownItem.parentElement.style.display = "block";
+
+                  if (itemValue === value || itemValue === oppositeValue) {
+                    dropdownItem.parentElement.style.display = "none";
+                  }
+                });
+              }
+
+              toggleItemInDropdown(dropdown.id)
             }
 
             hiddenInput.value = value;
           });
         });
       });
+    }
 
-      const dropdownBtn = document.getElementById("select-token-btn");
-      const hiddenInput = document.getElementById("selected-token");
-      const items = document.querySelectorAll(".dropdown-item");
+    function handleSwitchChainsClick() {
+      console.log("click!")
+    }
 
-      items.forEach(item => {
-        item.addEventListener("click", function (event) {
-          event.preventDefault();
-
-          const value = this.getAttribute("data-value");
-          const imgSrc = this.getAttribute("data-img");
-          const text = this.textContent.trim();
-
-          if (item.id.includes("token-")) {
-            dropdownBtn.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /> ${text}`;
-          } else {
-            button.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" /><span>${text}</span>`;
-          }
-
-          hiddenInput.value = value;
-        });
-      });
+    document.addEventListener("DOMContentLoaded", function () {
+      // This is for the chain selector
+      setupDropdown(".custom-dropdown1", true);
+      setupDropdown(".custom-dropdown2", true);
+      // This is for the token selector
+      setupDropdown(".select-token-btn", true);
     });
   </script>
 </body>
