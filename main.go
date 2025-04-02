@@ -13,6 +13,10 @@ func main() {
 		http.ServeFile(w, r, "static/index.html")
 	})
 
+	http.HandleFunc("/allTransactions", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/allTxs.html")
+	})
+
 	http.HandleFunc("/myTransactions", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "static/myTxs.html")
 	})
