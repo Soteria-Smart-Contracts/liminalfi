@@ -77,6 +77,14 @@ nav {
 	background-color: var(--main-transparent);
 }
 
+.btn-circle {
+	background-color: var(--main-transparent);
+
+	&:hover {
+		/*background-color: white;*/
+	}
+}
+
 main {
 	min-height: 80%;
 }

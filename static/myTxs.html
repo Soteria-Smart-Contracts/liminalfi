@@ -41,7 +41,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/" id="nav-button" style="color: var(--secondary-color);" data-bs-toggle="popover"
               data-bs-trigger="hover focus" data-bs-placement="top" data-bs-content="Go back to Bridge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              <svg xmlns="http://www.w3.org/2000/svg" width="38" height="27" fill="currentColor"
                 class="bi bi-arrow-left-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                   d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5" />
@@ -61,7 +61,19 @@
     <div class="w-100">
       <div class="d-flex flex-column container border-subtle rounded-4 mt-m-5 mt-3 p-2 bridge-box g-1">
         <div class="mb-2 f-neuro">
-          <h1>My transactions</h1>
+          <h1 class="d-flex flex-row gap-2 align-items-center">
+            <a class="nav-link rounded-circle btn-circle" href="/" style="color: var(--secondary-color);"
+              data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="left"
+              data-bs-content="Back to Bridge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="38" height="27" fill="currentColor"
+                class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5" />
+              </svg>
+            </a>
+
+            My transactions
+          </h1>
         </div>
 
         <div class="table-responsive rounded-4">
