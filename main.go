@@ -7,19 +7,19 @@ import (
 )
 
 func main() {
-	fs := http.FileServer(http.Dir("static"))
+	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "static/index.html")
+		http.ServeFile(w, r, "./static/index.html")
 	})
 
 	http.HandleFunc("/allTransactions", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "static/allTxs.html")
+		http.ServeFile(w, r, "./static/allTxs.html")
 	})
 
 	http.HandleFunc("/myTransactions", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "static/myTxs.html")
+		http.ServeFile(w, r, "./static/myTxs.html")
 	})
 
 	port := os.Getenv("PORT")
