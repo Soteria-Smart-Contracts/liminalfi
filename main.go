@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"os"
 )
@@ -11,7 +12,13 @@ import (
 var staticFiles embed.FS
 
 func main() {
-	fileServer := http.FileServer(http.FS(staticFiles))
+	fsys, err := fs.Sub(staticFiles, "static")
+	if err != nil {
+		panic(err)
+	}
+
+	// Configurar el FileServer con el sub filesystem
+	fileServer := http.FileServer(http.FS(fsys))
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
