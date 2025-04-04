@@ -1,25 +1,44 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"net/http"
 	"os"
 )
 
+//go:embed static/*
+var staticFiles embed.FS
+
 func main() {
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	fileServer := http.FileServer(http.FS(staticFiles))
+	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/index.html")
+		data, err := staticFiles.ReadFile("static/index.html")
+		if err != nil {
+			http.Error(w, "index.html no encontrado", 500)
+			return
+		}
+		w.Write(data)
 	})
 
 	http.HandleFunc("/allTransactions", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/allTxs.html")
+		data, err := staticFiles.ReadFile("static/allTxs.html")
+		if err != nil {
+			http.Error(w, "allTxs.html no encontrado", 500)
+			return
+		}
+		w.Write(data)
 	})
 
 	http.HandleFunc("/myTransactions", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./static/myTxs.html")
+		data, err := staticFiles.ReadFile("static/myTxs.html")
+		if err != nil {
+			http.Error(w, "myTxs.html no encontrado", 500)
+			return
+		}
+		w.Write(data)
 	})
 
 	port := os.Getenv("PORT")
