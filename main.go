@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -21,7 +22,10 @@ func main() {
 		http.ServeFile(w, r, "static/myTxs.html")
 	})
 
-	port := ":8080"
-	fmt.Println("Servidor corriendo en http://localhost"+port, "o en htttp://192.168.18.17"+port)
-	http.ListenAndServe(port, nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // por si estás corriendo local
+	}
+	fmt.Println("Servidor corriendo en http://localhost:"+port, "o en htttp://192.168.18.17:"+port)
+	http.ListenAndServe(":"+port, nil)
 }
