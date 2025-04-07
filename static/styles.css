@@ -80,9 +80,9 @@ nav {
 .btn-circle {
 	background-color: var(--main-transparent);
 
-	&:hover {
-		/*background-color: white;*/
-	}
+	/*&:hover {*/
+	/*	background-color: white;*/
+	/*}*/
 }
 
 main {
@@ -311,7 +311,7 @@ select:focus {
 		text-shadow: 2px 2px 5px var(--primary-color);
 	}
 
-	@media (max-width: 600px) {
+	@media (max-width: 612px) {
 		width: 88%;
 	}
 

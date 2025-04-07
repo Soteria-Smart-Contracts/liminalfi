@@ -52,6 +52,6 @@ func main() {
 	if port == "" {
 		port = "8080" // por si estás corriendo local
 	}
-	fmt.Println("Servidor corriendo en http://localhost:"+port, "o en htttp://192.168.18.17:"+port)
+	fmt.Println("Servidor corriendo en http://localhost:"+port, "o en http://192.168.18.17:"+port)
 	http.ListenAndServe("0.0.0.0:"+port, nil)
 }
