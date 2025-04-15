@@ -37,13 +37,13 @@ body {
 }
 
 header {
-  background-color: #0c212959;
+  background-color: #0c21290a;
 }
 
 nav {
   min-height: 15%;
   padding: 8px;
-  border-bottom: 1px solid #00000014;
+  border-bottom: 1px solid #1b141400;
   text-shadow: 2px 2px 5px var(--third-color);
   a {
     &:hover {
@@ -164,8 +164,15 @@ table {
   }
 }
 
-#send-tx-btn {
+#send-tx-btn,
+#go-to-dapp {
   background-color: var(--secondary-color);
+}
+
+#go-to-dapp {
+  &:hover {
+    color: white;
+  }
 }
 
 #you-receive {

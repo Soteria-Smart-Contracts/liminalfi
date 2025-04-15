@@ -44,185 +44,27 @@
             <img src="/static/img/app03.png" alt="liminal logo" />
             Liminal
           </a>
-
-          <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                tabindex="0"
-                href="/allTransactions"
-                style="color: var(--secondary-color)"
-                data-bs-toggle="popover"
-                data-bs-trigger="hover focus"
-                data-bs-placement="bottom"
-                data-bs-content="Processed transactions"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="38"
-                  height="27"
-                  fill="currentColor"
-                  class="bi bi-bricks"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M0 .5A.5.5 0 0 1 .5 0h15a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H14v2h1.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H14v2h1.5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5H2v-2H.5a.5.5 0 0 1-.5-.5v-3A.5.5 0 0 1 .5 6H2V4H.5a.5.5 0 0 1-.5-.5zM3 4v2h4.5V4zm5.5 0v2H13V4zM3 10v2h4.5v-2zm5.5 0v2H13v-2zM1 1v2h3.5V1zm4.5 0v2h5V1zm6 0v2H15V1zM1 7v2h3.5V7zm4.5 0v2h5V7zm6 0v2H15V7zM1 13v2h3.5v-2zm4.5 0v2h5v-2zm6 0v2H15v-2z"
-                  />
-                </svg>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                tabindex="0"
-                href="/myTransactions"
-                style="color: var(--secondary-color)"
-                data-bs-toggle="popover"
-                data-bs-trigger="hover focus"
-                data-bs-placement="top"
-                data-bs-content="Check your transactions"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="38"
-                  height="27"
-                  fill="currentColor"
-                  class="bi bi-clock-history"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"
-                  />
-                  <path
-                    d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"
-                  />
-                  <path
-                    d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"
-                  />
-                </svg>
-              </a>
-            </li>
-            <li class="nav-item">
-              <button class="btn f-neuro" id="connect-btn">Connect</button>
-            </li>
-          </ul>
         </div>
       </nav>
     </header>
 
     <main class="d-flex align-items-center justify-content-center">
-      <div class="w-100"></div>
+      <div class="w-100">
+        <div class="mx-auto text-center mb-4">
+          <h2 class="mb-5">Welcome to</h2>
+          <h1 class="f-neuro mb-5">Liminal Finance Bridge</h1>
+          <h6>Connecting assets, connecting worlds.</h6>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+          <a href="/bridge">
+            <button type="button" class="btn fw-bold f-neuro" id="go-to-dapp">
+              Go to dApp
+            </button>
+          </a>
+        </div>
+      </div>
     </main>
     <footer class="text-center">&copy; 2025 Liminal Bridge</footer>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        let popoverElements = document.querySelectorAll(
-          '[data-bs-toggle="popover"]',
-        );
-        const isTouchDevice =
-          "ontouchstart" in window || navigator.maxTouchPoints > 0;
-
-        popoverElements.forEach((el) => {
-          if (!isTouchDevice) {
-            new bootstrap.Popover(el);
-          }
-        });
-      });
-
-      function setupDropdown(selector, updateButton) {
-        document.querySelectorAll(selector).forEach((dropdown) => {
-          const button = dropdown.querySelector(".dropdown-toggle");
-          const hiddenInput = dropdown.querySelector("input[type=hidden]");
-          const oppositeDropdownId =
-            dropdown.id === "dropdownChainA"
-              ? "dropdownChainB"
-              : "dropdownChainA";
-
-          dropdown.querySelectorAll(".dropdown-item").forEach((item) => {
-            item.addEventListener("click", (e) => {
-              e.preventDefault();
-              const value = item.getAttribute("data-value").trim();
-              const text = item.textContent.trim();
-              const imgSrc =
-                item.querySelector("img")?.src || item.getAttribute("data-img");
-
-              if (updateButton) {
-                button.innerHTML = `<img src="${imgSrc}" alt="${text} logo" class="dropdown-icon me-2" />${text}`;
-
-                const toggleItemInDropdown = (dropdownID) => {
-                  const currentDropdown = document.getElementById(dropdownID);
-                  const oppositeDropdown =
-                    document.getElementById(oppositeDropdownId);
-                  const oppositeHiddenInput =
-                    oppositeDropdown.querySelector("input[type=hidden]");
-                  const dropdownItems =
-                    currentDropdown.querySelectorAll(".dropdown-item");
-                  const oppositeItems = oppositeDropdown
-                    ? oppositeDropdown.querySelectorAll(".dropdown-item")
-                    : [];
-
-                  oppositeItems.forEach((item) => {
-                    const itemValue = item.getAttribute("data-value").trim();
-                    item.parentElement.style.display = "block";
-
-                    if (
-                      itemValue === value ||
-                      itemValue === oppositeHiddenInput.value
-                    ) {
-                      item.parentElement.style.display = "none";
-                    }
-                  });
-
-                  dropdownItems.forEach((dropdownItem, index) => {
-                    const itemValue = dropdownItem
-                      .getAttribute("data-value")
-                      .trim();
-                    const oppositeValue = oppositeHiddenInput.value.trim();
-                    dropdownItem.parentElement.style.display = "block";
-
-                    if (itemValue === value || itemValue === oppositeValue) {
-                      dropdownItem.parentElement.style.display = "none";
-                    }
-                  });
-                };
-
-                toggleItemInDropdown(dropdown.id);
-              }
-
-              hiddenInput.value = value;
-            });
-          });
-        });
-      }
-
-      function handleSwitchChainsClick() {
-        const chainSelectorA = document.getElementById("dropdownChainA");
-        const buttonA = chainSelectorA.querySelector(".dropdown-toggle");
-        const hiddenInputA = chainSelectorA.querySelector("input[type=hidden]");
-
-        const chainSelectorB = document.getElementById("dropdownChainB");
-        const buttonB = chainSelectorB.querySelector(".dropdown-toggle");
-        const hiddenInputB = chainSelectorB.querySelector("input[type=hidden]");
-
-        const tempValue = hiddenInputA.value;
-        const tempButtonHTML = buttonA.innerHTML;
-
-        hiddenInputA.value = hiddenInputB.value;
-        buttonA.innerHTML = buttonB.innerHTML;
-
-        hiddenInputB.value = tempValue;
-        buttonB.innerHTML = tempButtonHTML;
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        // This is for the chain selector
-        setupDropdown(".custom-dropdown1", true);
-        setupDropdown(".custom-dropdown2", true);
-        // This is for the token selector
-        setupDropdown(".select-token-btn", true);
-      });
-    </script>
   </body>
 </html>
