@@ -24,7 +24,16 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		data, err := staticFiles.ReadFile("static/index.html")
 		if err != nil {
-			http.Error(w, "index.html no encontrado", 500)
+			http.Error(w, "index.html Not found", 500)
+			return
+		}
+		w.Write(data)
+	})
+
+	http.HandleFunc("/bridge", func(w http.ResponseWriter, r *http.Request) {
+		data, err := staticFiles.ReadFile("static/bridge.html")
+		if err != nil {
+			http.Error(w, "bridge.html Not found", 500)
 			return
 		}
 		w.Write(data)
@@ -33,7 +42,7 @@ func main() {
 	http.HandleFunc("/allTransactions", func(w http.ResponseWriter, r *http.Request) {
 		data, err := staticFiles.ReadFile("static/allTxs.html")
 		if err != nil {
-			http.Error(w, "allTxs.html no encontrado", 500)
+			http.Error(w, "allTxs.html Not found", 500)
 			return
 		}
 		w.Write(data)
@@ -42,13 +51,14 @@ func main() {
 	http.HandleFunc("/myTransactions", func(w http.ResponseWriter, r *http.Request) {
 		data, err := staticFiles.ReadFile("static/myTxs.html")
 		if err != nil {
-			http.Error(w, "myTxs.html no encontrado", 500)
+			http.Error(w, "myTxs.html Not found", 500)
 			return
 		}
 		w.Write(data)
 	})
 
 	port := os.Getenv("PORT")
+
 	if port == "" {
 		port = "8080" // por si estás corriendo local
 	}
