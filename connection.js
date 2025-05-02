@@ -2,6 +2,8 @@ let provider = null;
 let signer = null;
 let currentAccount = null;
 
+let chain1
+
 async function connectWallet() {
     try {
         if (!window.ethereum) {
