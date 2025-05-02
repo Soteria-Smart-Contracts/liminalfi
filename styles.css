@@ -362,7 +362,7 @@ select:focus {
 }
 
 #connect-btn.connected {
-  background: #2d3748;
+  background: #1a3b73;
   border-color: var(--accent-color);
 }
 
