@@ -4,22 +4,18 @@ let currentAccount = null;
 
 async function connectWallet() {
     try {
-        // Check if Ethereum provider is available
         if (!window.ethereum) {
             alert('Please install MetaMask or another Ethereum wallet!');
             return;
         }
 
-        // Create ethers provider and signer
+        // Use the modern provider detection
         provider = new ethers.BrowserProvider(window.ethereum);
         signer = await provider.getSigner();
         currentAccount = await signer.getAddress();
 
-        // Update UI
         updateConnectionState();
         setupAccountListeners();
-
-        // Enable send button
         document.getElementById('send-tx-btn').disabled = false;
 
     } catch (error) {
@@ -31,7 +27,6 @@ async function connectWallet() {
 function updateConnectionState() {
     const connectBtn = document.getElementById('connect-btn');
     if (currentAccount) {
-        // Truncate address: first 6 + ... + last 4 characters
         const truncatedAddress = `${currentAccount.slice(0, 6)}...${currentAccount.slice(-4)}`;
         connectBtn.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
@@ -47,10 +42,8 @@ function updateConnectionState() {
 }
 
 function setupAccountListeners() {
-    // Handle account changes
     window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length === 0) {
-            // Wallet disconnected
             currentAccount = null;
             updateConnectionState();
         } else if (accounts[0] !== currentAccount) {
@@ -59,42 +52,43 @@ function setupAccountListeners() {
         }
     });
 
-    // Handle chain changes
     window.ethereum.on('chainChanged', () => {
         window.location.reload();
     });
 }
-// Initialize after DOM loads
-document.addEventListener('DOMContentLoaded', async () => {
-    // Get the connect button element
-    const connectBtn = document.getElementById('connect-btn');
-    
-    // Add click handler safely
-    if (connectBtn) {
-        connectBtn.addEventListener('click', connectWallet);
-    } else {
-        console.error('Connect button not found!');
-    }
 
-    // Rest of initialization...
-    if (window.ethereum) {
-        try {
-            // CORRECTED: Use Web3Provider instead of BrowserProvider for ethers v5
-            provider = new ethers.providers.Web3Provider(window.ethereum);
+// Wait for both DOM and ethers to be ready
+function initializeWhenReady() {
+    if (typeof ethers !== 'undefined' && document.readyState === 'complete') {
+        setupConnection();
+    } else {
+        window.addEventListener('load', setupConnection);
+    }
+}
+
+async function setupConnection() {
+    try {
+        const connectBtn = document.getElementById('connect-btn');
+        if (connectBtn) {
+            connectBtn.addEventListener('click', connectWallet);
+        }
+
+        if (window.ethereum && ethers) {
+            provider = new ethers.BrowserProvider(window.ethereum);
             const accounts = await window.ethereum.request({ method: 'eth_accounts' });
             
             if (accounts.length > 0) {
-                signer = provider.getSigner();
+                signer = await provider.getSigner();
                 currentAccount = await signer.getAddress();
                 updateConnectionState();
                 setupAccountListeners();
-                const sendBtn = document.getElementById('send-tx-btn');
-                if (sendBtn) sendBtn.disabled = false;
+                document.getElementById('send-tx-btn').disabled = false;
             }
-        } catch (error) {
-            console.error('Initial connection check failed:', error);
         }
+    } catch (error) {
+        console.log('Initialization complete (non-critical):', error.message);
     }
-});
-// Connect the button
-document.getElementById('connect-btn').addEventListener('click', connectWallet);
+}
+
+// Start initialization
+initializeWhenReady();
