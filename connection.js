@@ -2,7 +2,15 @@ let provider = null;
 let signer = null;
 let currentAccount = null;
 
-let chain1
+let chain1 = {
+    name: 'Ethereum Mainnet',
+    tokens: [
+        {
+            name: 'ETH',
+            address: '0x'
+        }
+    ]
+};
 
 async function connectWallet() {
     try {
