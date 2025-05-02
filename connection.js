@@ -3,10 +3,21 @@ let signer = null;
 let currentAccount = null;
 
 let chain1 = {
-    name: 'Ethereum Mainnet',
+    name: 'BASE Mainnet',
     tokens: [
         {
             name: 'ETH',
+            address: '0x'
+        }
+    ]
+};
+
+let chain2 = {
+    name: 'Bittensor EVM',
+    id : 123,
+    tokens: [
+        {
+            name: 'BTC',
             address: '0x'
         }
     ]
