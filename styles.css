@@ -352,3 +352,25 @@ select:focus {
       0 0 50px rgba(255, 255, 255, 0.3);
   }
 }
+
+/* Connection button styles */
+#connect-btn {
+  background: var(--accent-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+#connect-btn.connected {
+  background: #2d3748;
+  border-color: var(--accent-color);
+}
+
+#connect-btn:hover {
+  transform: translateY(-1px);
+}
+
+#connect-btn svg {
+  margin-right: 8px;
+  vertical-align: -2px;
+}
