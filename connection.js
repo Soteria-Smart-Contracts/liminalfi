@@ -64,26 +64,37 @@ function setupAccountListeners() {
         window.location.reload();
     });
 }
-
-// Initialize connection on page load
+// Initialize after DOM loads
 document.addEventListener('DOMContentLoaded', async () => {
+    // Get the connect button element
+    const connectBtn = document.getElementById('connect-btn');
+    
+    // Add click handler safely
+    if (connectBtn) {
+        connectBtn.addEventListener('click', connectWallet);
+    } else {
+        console.error('Connect button not found!');
+    }
+
+    // Rest of initialization...
     if (window.ethereum) {
         try {
-            provider = new ethers.BrowserProvider(window.ethereum);
+            // CORRECTED: Use Web3Provider instead of BrowserProvider for ethers v5
+            provider = new ethers.providers.Web3Provider(window.ethereum);
             const accounts = await window.ethereum.request({ method: 'eth_accounts' });
             
             if (accounts.length > 0) {
-                signer = await provider.getSigner();
+                signer = provider.getSigner();
                 currentAccount = await signer.getAddress();
                 updateConnectionState();
                 setupAccountListeners();
-                document.getElementById('send-tx-btn').disabled = false;
+                const sendBtn = document.getElementById('send-tx-btn');
+                if (sendBtn) sendBtn.disabled = false;
             }
         } catch (error) {
             console.error('Initial connection check failed:', error);
         }
     }
 });
-
 // Connect the button
 document.getElementById('connect-btn').addEventListener('click', connectWallet);
