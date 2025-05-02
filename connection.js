@@ -4,6 +4,7 @@ let currentAccount = null;
 
 let chain1 = {
     name: 'BASE Mainnet',
+    id : 84531,
     tokens: [
         {
             name: 'ETH',
