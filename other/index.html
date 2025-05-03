@@ -244,7 +244,12 @@ function throttlePreview(e, o){
     currentHoverColor = rgb;
     document.getElementById('colorDisplay').textContent = `R: ${Math.round(rgb.r)} G: ${Math.round(rgb.g)} B: ${Math.round(rgb.b)}`;
     
-    if(o)
+    if(o) {
+        setC(rgb.r,rgb.g,rgb.b);
+        setB(brightness);
+    } else {
+        document.getElementById('colorDisplay').style.background = `rgb(${Math.round(rgb.r)},${Math.round(rgb.g)},${Math.round(rgb.b)})`;
+    }
     setC(rgb.r,rgb.g,rgb.b);
     setB(brightness);
     document.getElementById('brightness').value = brightness;
