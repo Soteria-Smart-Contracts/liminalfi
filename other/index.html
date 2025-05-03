@@ -232,7 +232,7 @@ function startEditingPreset(index) {
 
 function throttlePreview(e, o){
     const now=Date.now();
-    if(!preview||cooldown||!pwr||now-lastColorTime<100)return;
+    if(cooldown||now-lastColorTime<100)return;
     lastColorTime=now;
     const rect=e.target.getBoundingClientRect();
     const x=(e.clientX-rect.left)/rect.width;
@@ -248,7 +248,7 @@ function throttlePreview(e, o){
         setC(rgb.r,rgb.g,rgb.b);
         setB(brightness);
     }
-    
+
     document.getElementById('brightness').value = brightness;
     document.getElementById('brightness-value').textContent = `${brightness}%`;
 }
