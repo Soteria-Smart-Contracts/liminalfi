@@ -5,7 +5,7 @@
     <title>BLEDOM Controller</title>
     <style>
         body{background:#0a192f;color:#e6f1ff;font-family:sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;margin:0;}
-        #color-rect{width:600px;height:300px;background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1)), linear-gradient(to right,red,yellow,lime,cyan,blue,magenta,red);cursor:none;margin:20px 0;position:relative;border-radius:8px;}
+        #color-rect{width:600px;height:300px;background:linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1)), linear-gradient(to right,red,yellow,lime,cyan,blue,magenta,red);cursor:crosshair;margin:20px 0;position:relative;border-radius:8px;}
         .preset-row{display:flex;justify-content:center;width:100%;margin-bottom:10px;}
         .preset-container{position:relative;width:180px;height:50px;margin:5px;display:flex;}
         .preset-color{width:75%;height:100%;cursor:pointer;border:2px solid #444;border-radius:6px 0 0 6px;}
@@ -19,20 +19,63 @@
         .control-btn:hover{transform:scale(1.05);box-shadow:0 0 10px rgba(59,130,246,0.5);}
         .control-btn.hover-effect{background:#3b82f6;box-shadow:0 0 15px #3b82f6;}
         .btn-group{display:flex;justify-content:center;}
-        .brightness-container {width:600px;margin:20px 0;}
+        
+        /* Fancy Brightness Slider */
+        .brightness-container {width: 600px; margin: 20px 0;}
         .brightness-slider {
-            -webkit-appearance:none;width:100%;height:8px;border-radius:4px;
-            background:linear-gradient(to right,#000,#fff);outline:none;opacity:0.7;
-            transition:opacity 0.2s;
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #000, #fff);
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
         }
-        .brightness-slider:hover{opacity:1;}
-        .brightness-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;box-shadow:0 0 5px rgba(0,0,0,0.3);}
-        .brightness-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;box-shadow:0 0 5px rgba(0,0,0,0.3);}
-        .brightness-label{display:flex;justify-content:space-between;margin-bottom:5px;font-size:14px;}
-        .color-display{position:absolute;top:-40px;left:0;right:0;text-align:center;font-family:monospace;font-size:16px;background:rgba(10,25,47,0.8);padding:5px;border-radius:4px;opacity:0;transition:opacity 0.2s;}
-        #color-rect:hover .color-display{opacity:1;}
-        #cursor-donut{position:absolute;width:24px;height:24px;border:2px solid white;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);z-index:10;}
-        #cursor-preview{position:absolute;width:60px;height:60px;border-radius:50%;border:2px solid white;pointer-events:none;transform:translate(-50%,-50%);z-index:10;display:none;}
+        .brightness-slider:hover {opacity: 1;}
+        .brightness-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        .brightness-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        .brightness-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        /* Color Display */
+        .color-display {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: monospace;
+            font-size: 16px;
+            background: rgba(10, 25, 47, 0.8);
+            padding: 5px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        #color-rect:hover .color-display {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -47,8 +90,6 @@
             </div>
             <div id="color-rect" onmouseenter="saveCurrentColor()" onmousemove="throttlePreview(event)" onmouseleave="restoreSavedColor()" onclick="lockColor(event)">
                 <div class="color-display" id="colorDisplay">R: 0 G: 0 B: 0</div>
-                <div id="cursor-donut"></div>
-                <div id="cursor-preview"></div>
             </div>
             <div class="preset-row">
                 <div class="preset-container">
@@ -104,7 +145,10 @@ let presets = JSON.parse(localStorage.getItem('bledomPresets')) || [
     {r:0,g:255,b:0,brightness:50},
     {r:255,g:0,b:0,brightness:50}
 ];
-let editingPreset = null, savedColor = {r:0,g:0,b:0}, savedBrightness = 50;
+let editingPreset = null;
+let currentHoverColor = {r:0,g:0,b:0};
+let savedColor = {r:0,g:0,b:0};
+let savedBrightness = 50;
 
 const sc=cmd=>c?.writeValue(cmd)??Promise.reject();
 const setC=(r,g,b)=>{clr={r,g,b};return sc(new Uint8Array([0x7e,0,5,3,r,g,b,0,0xef]));};
@@ -113,18 +157,7 @@ const setB=v=>sc(new Uint8Array([0x7e,0,1,v,0,0,0,0,0xef]));
 window.onload=()=>{
     document.getElementById(navigator.bluetooth?'interface':'nosupport').style.display='block';
     updatePresetDisplays();
-    updateDonutPosition();
 };
-
-function updateDonutPosition() {
-    const rect = document.getElementById('color-rect').getBoundingClientRect();
-    const x = (clr.r/255)*rect.width;
-    const y = (1-(clr.g/255))*rect.height;
-    const donut = document.getElementById('cursor-donut');
-    donut.style.left = `${x}px`;
-    donut.style.top = `${y}px`;
-    donut.style.backgroundColor = `rgb(${clr.r},${clr.g},${clr.b})`;
-}
 
 function savePresets() {
     localStorage.setItem('bledomPresets', JSON.stringify(presets));
@@ -163,38 +196,41 @@ async function hc(){
         document.getElementById('controls').style.display='block';
         isConnected=1;
         
+        // Set initial color and brightness
         clr = {r:255, g:59.925, b:0};
-        await sc(new Uint8Array([0x7e,0,4,1,0,0,0,0xef]));
-        await sc(new Uint8Array([0x7e,0,1,18,0,0,0,0,0xef]));
-        await sc(new Uint8Array([0x7e,0,5,3,255,60,0,0,0xef]));
+        await sc(new Uint8Array([0x7e,0,4,1,0,0,0,0xef])); // Power on
+        await sc(new Uint8Array([0x7e,0,1,18,0,0,0,0,0xef])); // Brightness 18
+        await sc(new Uint8Array([0x7e,0,5,3,255,60,0,0,0xef])); // Color
         
+        // Update UI
         document.getElementById('powerBtn').textContent='Power Off';
         document.getElementById('powerBtn').classList.add('on');
         document.getElementById('brightness').value = 18;
         document.getElementById('brightness-value').textContent = '18%';
-        updateDonutPosition();
     }catch(e){console.error('Connection error:',e);alert('Connection error: '+e.message);}
 }
 
-function updateBrightness(v) {
-    setB(v);
-    document.getElementById('brightness-value').textContent = `${v}%`;
+function updateBrightness(value) {
+    setB(value);
+    document.getElementById('brightness-value').textContent = `${value}%`;
     if(editingPreset !== null) {
-        presets[editingPreset].brightness = parseInt(v);
+        presets[editingPreset].brightness = parseInt(value);
         savePresets();
         updatePresetDisplays();
     }
 }
 
-function startEditingPreset(i) {
-    editingPreset = i;
+function startEditingPreset(index) {
+    editingPreset = index;
+    // Highlight the current preset being edited
     document.querySelectorAll('.preset-color').forEach(p => p.style.borderColor = '#444');
-    document.getElementById(`preset${i+1}-color`).style.borderColor = 'orange';
-    document.getElementById('brightness').value = presets[i].brightness;
-    document.getElementById('brightness-value').textContent = `${presets[i].brightness}%`;
+    document.getElementById(`preset${index+1}-color`).style.borderColor = 'orange';
+    // Update slider to match preset brightness
+    document.getElementById('brightness').value = presets[index].brightness;
+    document.getElementById('brightness-value').textContent = `${presets[index].brightness}%`;
 }
 
-function throttlePreview(e){
+function throttlePreview(e, o){
     const now=Date.now();
     if(cooldown||now-lastColorTime<100)return;
     lastColorTime=now;
@@ -204,14 +240,9 @@ function throttlePreview(e){
     const brightness = Math.round(100 - (y * 100));
     const rgb=hsvToRgb(x*360,1,1);
     
+    // Update hover display
+    currentHoverColor = rgb;
     document.getElementById('colorDisplay').textContent = `R: ${Math.round(rgb.r)} G: ${Math.round(rgb.g)} B: ${Math.round(rgb.b)}`;
-    
-    // Update cursor preview
-    const preview = document.getElementById('cursor-preview');
-    preview.style.left = `${e.clientX - rect.left}px`;
-    preview.style.top = `${e.clientY - rect.top}px`;
-    preview.style.backgroundColor = `rgb(${rgb.r},${rgb.g},${rgb.b})`;
-    preview.style.display = 'block';
     
     if(preview) {
         setC(rgb.r,rgb.g,rgb.b);
@@ -232,8 +263,6 @@ function lockColor(e){
     setB(brightness);
     document.getElementById('brightness').value = brightness;
     document.getElementById('brightness-value').textContent = `${brightness}%`;
-    clr = rgb;
-    updateDonutPosition();
     
     if(editingPreset !== null) {
         presets[editingPreset] = {r:rgb.r, g:rgb.g, b:rgb.b, brightness};
@@ -247,42 +276,43 @@ function lockColor(e){
     setTimeout(()=>cooldown=0,5000);
 }
 
-function applyPreset(i) {
-    if(editingPreset !== null) return;
-    const p = presets[i];
-    setC(p.r, p.g, p.b);
-    setB(p.brightness);
-    clr = {r:p.r, g:p.g, b:p.b};
+function applyPreset(index) {
+    if(editingPreset !== null) return; // Don't apply if we're in edit mode
+    const preset = presets[index];
+    setC(preset.r, preset.g, preset.b);
+    setB(preset.brightness);
+    clr = {r: preset.r, g: preset.g, b: preset.b};
     pwr = 1;
     document.getElementById('powerBtn').textContent='Power Off';
     document.getElementById('powerBtn').classList.add('on');
-    document.getElementById('brightness').value = p.brightness;
-    document.getElementById('brightness-value').textContent = `${p.brightness}%`;
-    updateDonutPosition();
+    document.getElementById('brightness').value = preset.brightness;
+    document.getElementById('brightness-value').textContent = `${preset.brightness}%`;
 }
 
 function updatePresetDisplays() {
-    presets.forEach((p,i) => {
-        const c=document.getElementById(`preset${i+1}-color`);
-        const b=document.getElementById(`preset${i+1}-brightness`);
-        c.style.background = `rgb(${p.r},${p.g},${p.b})`;
-        b.style.opacity = p.brightness/100;
-        c.title = `Color: ${Math.round(p.r)},${Math.round(p.g)},${Math.round(p.b)}`;
-        b.title = `Brightness: ${p.brightness}%`;
+    presets.forEach((preset, i) => {
+        const colorEl = document.getElementById(`preset${i+1}-color`);
+        const brightnessEl = document.getElementById(`preset${i+1}-brightness`);
+        
+        colorEl.style.background = `rgb(${preset.r},${preset.g},${preset.b})`;
+        brightnessEl.style.opacity = preset.brightness/100;
+        
+        colorEl.title = `Color: ${Math.round(preset.r)},${Math.round(preset.g)},${Math.round(preset.b)}`;
+        brightnessEl.title = `Brightness: ${preset.brightness}%`;
     });
 }
 
 function hoverPower(){
     if(!isConnected)return;
-    const b=document.getElementById('powerBtn');
-    b.classList.add('hover-effect');
+    const btn=document.getElementById('powerBtn');
+    btn.classList.add('hover-effect');
     sc(new Uint8Array([0x7e,0,4,pwr?0:1,0,0,0,0xef]));
 }
 
 function unhoverPower(){
     if(!isConnected)return;
-    const b=document.getElementById('powerBtn');
-    b.classList.remove('hover-effect');
+    const btn=document.getElementById('powerBtn');
+    btn.classList.remove('hover-effect');
     sc(new Uint8Array([0x7e,0,4,pwr?1:0,0,0,0,0xef]));
 }
 
@@ -300,7 +330,6 @@ function togglePreview(){
     const p=document.getElementById('previewBtn');
     p.textContent=`Preview: ${preview?'ON':'OFF'}`;
     p.classList.toggle('on');
-    document.getElementById('cursor-preview').style.display = preview ? 'block' : 'none';
 }
 
 function hsvToRgb(h,s,v){
