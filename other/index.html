@@ -230,7 +230,7 @@ function startEditingPreset(index) {
     document.getElementById('brightness-value').textContent = `${presets[index].brightness}%`;
 }
 
-function throttlePreview(e){
+function throttlePreview(e, o){
     const now=Date.now();
     if(!preview||cooldown||!pwr||now-lastColorTime<100)return;
     lastColorTime=now;
@@ -244,6 +244,7 @@ function throttlePreview(e){
     currentHoverColor = rgb;
     document.getElementById('colorDisplay').textContent = `R: ${Math.round(rgb.r)} G: ${Math.round(rgb.g)} B: ${Math.round(rgb.b)}`;
     
+    if(o)
     setC(rgb.r,rgb.g,rgb.b);
     setB(brightness);
     document.getElementById('brightness').value = brightness;
