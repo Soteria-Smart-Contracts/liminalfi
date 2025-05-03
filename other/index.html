@@ -88,7 +88,7 @@
                 <button id="powerBtn" class="control-btn" onmouseover="hoverPower()" onmouseout="unhoverPower()" onclick="lockPower()">Power Off</button>
                 <button id="previewBtn" class="control-btn on" onclick="togglePreview()">Preview: ON</button>
             </div>
-            <div id="color-rect" onmousemove="throttlePreview(event)" onclick="lockColor(event)">
+            <div id="color-rect" onmouseenter="saveCurrentColor()" onmousemove="throttlePreview(event)" onmouseleave="restoreSavedColor()" onclick="lockColor(event)">
                 <div class="color-display" id="colorDisplay">R: 0 G: 0 B: 0</div>
             </div>
             <div class="preset-row">
@@ -147,6 +147,8 @@ let presets = JSON.parse(localStorage.getItem('bledomPresets')) || [
 ];
 let editingPreset = null;
 let currentHoverColor = {r:0,g:0,b:0};
+let savedColor = {r:0,g:0,b:0};
+let savedBrightness = 50;
 
 const sc=cmd=>c?.writeValue(cmd)??Promise.reject();
 const setC=(r,g,b)=>{clr={r,g,b};return sc(new Uint8Array([0x7e,0,5,3,r,g,b,0,0xef]));};
@@ -159,6 +161,21 @@ window.onload=()=>{
 
 function savePresets() {
     localStorage.setItem('bledomPresets', JSON.stringify(presets));
+}
+
+function saveCurrentColor() {
+    if (!preview || !pwr) return;
+    savedColor = {...clr};
+    savedBrightness = parseInt(document.getElementById('brightness').value);
+}
+
+function restoreSavedColor() {
+    if (!preview || !pwr) return;
+    setC(savedColor.r, savedColor.g, savedColor.b);
+    setB(savedBrightness);
+    document.getElementById('brightness').value = savedBrightness;
+    document.getElementById('brightness-value').textContent = `${savedBrightness}%`;
+    clr = {...savedColor};
 }
 
 async function hc(){
