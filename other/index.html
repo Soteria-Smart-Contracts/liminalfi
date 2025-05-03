@@ -76,40 +76,6 @@
         #color-rect:hover .color-display {
             opacity: 1;
         }
-        
-        /* Current Position Indicator */
-        .current-position {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border: 2px solid white;
-            border-radius: 50%;
-            background: transparent;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        /* Magnifier */
-        .magnifier {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 2px solid white;
-            border-radius: 50%;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 20;
-            display: none;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .magnifier-inner {
-            width: 100%;
-            height: 100%;
-            background-size: 600px 300px;
-            transform: scale(2);
-            transform-origin: 0 0;
-        }
     </style>
 </head>
 <body>
@@ -122,12 +88,8 @@
                 <button id="powerBtn" class="control-btn" onmouseover="hoverPower()" onmouseout="unhoverPower()" onclick="lockPower()">Power Off</button>
                 <button id="previewBtn" class="control-btn" onclick="togglePreview()">Preview: Off</button>
             </div>
-            <div id="color-rect" onmouseenter="saveCurrentColor()" onmousemove="handleColorRectMove(event)" onmouseleave="restoreSavedColor()" onclick="lockColor(event)">
+            <div id="color-rect" onmouseenter="saveCurrentColor()" onmousemove="throttlePreview(event)" onmouseleave="restoreSavedColor()" onclick="lockColor(event)">
                 <div class="color-display" id="colorDisplay">R: 0 G: 0 B: 0</div>
-                <div class="current-position" id="currentPosition"></div>
-                <div class="magnifier" id="magnifier">
-                    <div class="magnifier-inner" id="magnifierInner"></div>
-                </div>
             </div>
             <div class="preset-row">
                 <div class="preset-container">
@@ -187,7 +149,6 @@ let editingPreset = null;
 let currentHoverColor = {r:0,g:0,b:0};
 let savedColor = {r:0,g:0,b:0};
 let savedBrightness = 50;
-let currentPosition = {x:0, y:0};
 
 const sc=cmd=>c?.writeValue(cmd)??Promise.reject();
 const setC=(r,g,b)=>{clr={r,g,b};return sc(new Uint8Array([0x7e,0,5,3,r,g,b,0,0xef]));};
@@ -196,7 +157,6 @@ const setB=v=>sc(new Uint8Array([0x7e,0,1,v,0,0,0,0,0xef]));
 window.onload=()=>{
     document.getElementById(navigator.bluetooth?'interface':'nosupport').style.display='block';
     updatePresetDisplays();
-    updateCurrentPositionIndicator();
 };
 
 function savePresets() {
@@ -216,38 +176,6 @@ function restoreSavedColor() {
     document.getElementById('brightness').value = savedBrightness;
     document.getElementById('brightness-value').textContent = `${savedBrightness}%`;
     clr = {...savedColor};
-    document.getElementById('magnifier').style.display = 'none';
-}
-
-function updateCurrentPositionIndicator() {
-    const rect = document.getElementById('color-rect').getBoundingClientRect();
-    const h = clr.r === 0 && clr.g === 0 && clr.b === 0 ? 0 : 
-              rgbToHsv(clr.r, clr.g, clr.b).h / 360;
-    const brightness = parseInt(document.getElementById('brightness').value);
-    const yPos = (100 - brightness) / 100;
-    
-    const indicator = document.getElementById('currentPosition');
-    indicator.style.left = `${h * rect.width}px`;
-    indicator.style.top = `${yPos * rect.height}px`;
-}
-
-function handleColorRectMove(e) {
-    const rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Update magnifier position
-    const magnifier = document.getElementById('magnifier');
-    magnifier.style.left = `${e.clientX + 20}px`;
-    magnifier.style.top = `${e.clientY + 20}px`;
-    magnifier.style.display = 'block';
-    
-    // Update magnifier content
-    const magnifierInner = document.getElementById('magnifierInner');
-    magnifierInner.style.backgroundImage = `linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1)), linear-gradient(to right,red,yellow,lime,cyan,blue,magenta,red)`;
-    magnifierInner.style.backgroundPosition = `-${x-25}px -${y-25}px`;
-    
-    throttlePreview(e);
 }
 
 async function hc(){
@@ -279,7 +207,6 @@ async function hc(){
         document.getElementById('powerBtn').classList.add('on');
         document.getElementById('brightness').value = 18;
         document.getElementById('brightness-value').textContent = '18%';
-        updateCurrentPositionIndicator();
     }catch(e){console.error('Connection error:',e);alert('Connection error: '+e.message);}
 }
 
@@ -291,7 +218,6 @@ function updateBrightness(value) {
         savePresets();
         updatePresetDisplays();
     }
-    updateCurrentPositionIndicator();
 }
 
 function startEditingPreset(index) {
@@ -304,7 +230,7 @@ function startEditingPreset(index) {
     document.getElementById('brightness-value').textContent = `${presets[index].brightness}%`;
 }
 
-function throttlePreview(e){
+function throttlePreview(e, o){
     const now=Date.now();
     if(cooldown||now-lastColorTime<100)return;
     lastColorTime=now;
@@ -337,8 +263,6 @@ function lockColor(e){
     setB(brightness);
     document.getElementById('brightness').value = brightness;
     document.getElementById('brightness-value').textContent = `${brightness}%`;
-    clr = rgb;
-    updateCurrentPositionIndicator();
     
     if(editingPreset !== null) {
         presets[editingPreset] = {r:rgb.r, g:rgb.g, b:rgb.b, brightness};
@@ -363,7 +287,6 @@ function applyPreset(index) {
     document.getElementById('powerBtn').classList.add('on');
     document.getElementById('brightness').value = preset.brightness;
     document.getElementById('brightness-value').textContent = `${preset.brightness}%`;
-    updateCurrentPositionIndicator();
 }
 
 function updatePresetDisplays() {
@@ -419,25 +342,6 @@ function hsvToRgb(h,s,v){
         case 4:return{r:t*255,g:p*255,b:v*255};
         default:return{r:v*255,g:p*255,b:q*255};
     }
-}
-
-function rgbToHsv(r, g, b) {
-    r /= 255, g /= 255, b /= 255;
-    const max = Math.max(r, g, b), min = Math.min(r, g, b);
-    let h, s, v = max;
-    const d = max - min;
-    s = max === 0 ? 0 : d / max;
-    if (max === min) {
-        h = 0; // achromatic
-    } else {
-        switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
-        }
-        h /= 6;
-    }
-    return { h: h * 360, s, v };
 }
 </script>
 </body>
