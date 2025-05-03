@@ -244,7 +244,7 @@ function throttlePreview(e, o){
     currentHoverColor = rgb;
     document.getElementById('colorDisplay').textContent = `R: ${Math.round(rgb.r)} G: ${Math.round(rgb.g)} B: ${Math.round(rgb.b)}`;
     
-    if(o) {
+    if(preview) {
         setC(rgb.r,rgb.g,rgb.b);
         setB(brightness);
     }
