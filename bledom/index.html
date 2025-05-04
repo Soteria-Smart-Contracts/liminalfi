@@ -153,6 +153,7 @@
             y = (e.clientY - rect.top) / rect.height,
             b = Math.round(y < 0.5 ? 100 - 200 * y * y : 200 * (1 - y) * (1 - y)),
             rgb = hsvToRgb(x * 360, 1, 1);
+        currentClrState.brightness = v;
         setC(rgb.r, rgb.g, rgb.b);
         setB(b);
         document.getElementById('brightness').value = b;
