@@ -66,7 +66,6 @@ clr={...savedColor};
 async function hc(){
 try{
 d=await navigator.bluetooth.requestDevice({
-            filters: [{ name: 'elk-bledom' }],  // Filter for devices with "ELK" in name
             optionalServices: ['0000fff0-0000-1000-8000-00805f9b34fb'],
             acceptAllDevices: true  // Force filtering
         });
