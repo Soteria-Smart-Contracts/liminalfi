@@ -42,7 +42,9 @@ let editingPreset=null,currentHoverColor={r:0,g:0,b:0},savedColor={r:0,g:0,b:0},
 const sc=cmd=>c?.writeValue(cmd)??Promise.reject(),setC=(r,g,b)=>{clr={r,g,b};return sc(new Uint8Array([0x7e,0,5,3,r,g,b,0,0xef]));},setB=v=>sc(new Uint8Array([0x7e,0,1,v,0,0,0,0,0xef]));
 
 // Get saved device ID from localStorage
-const savedDeviceId = localStorage.getItem('bledomDeviceId');
+const getSavedDeviceId = () => localStorage.getItem('bledomDeviceId');
+const saveDeviceId = (id) => localStorage.setItem('bledomDeviceId', id);
+const clearDeviceId = () => localStorage.removeItem('bledomDeviceId');
 
 window.onload=()=>{
 document.getElementById(navigator.bluetooth?'interface':'nosupport').style.display='block';
@@ -68,29 +70,31 @@ clr={...savedColor};
 
 async function hc(){
 try{
-// Use saved device ID if available
+const savedDeviceId = getSavedDeviceId();
 const options = {
-  optionalServices: ['0000fff0-0000-1000-8000-00805f9b34fb']
+    optionalServices: ['0000fff0-0000-1000-8000-00805f9b34fb']
 };
 
+// If we have a saved device ID, filter for that device
 if (savedDeviceId) {
-  options.filters = [{ services: ['0000fff0-0000-1000-8000-00805f9b34fb'] }];
-  options.acceptAllDevices = false;
+    options.filters = [{ id: savedDeviceId }];
+    options.optionalServices = ['0000fff0-0000-1000-8000-00805f9b34fb'];
 } else {
-  options.acceptAllDevices = true;
+    options.acceptAllDevices = true;
+    options.optionalServices = ['0000fff0-0000-1000-8000-00805f9b34fb'];
 }
 
 d=await navigator.bluetooth.requestDevice(options);
     
-// Save the device ID when first paired
-if (!savedDeviceId && d.id) {
-  localStorage.setItem('bledomDeviceId', d.id);
+// Save the device ID if it's not already saved
+if (!savedDeviceId) {
+    saveDeviceId(d.id);
 }
 
 d.addEventListener('gattserverdisconnected',()=>{
-document.getElementById('connectBtn').style.display='block';
-document.getElementById('controls').style.display='none';
-isConnected=0;
+    document.getElementById('connectBtn').style.display='block';
+    document.getElementById('controls').style.display='none';
+    isConnected=0;
 });
 const s=await d.gatt.connect();
 const v=await s.getPrimaryService('0000fff0-0000-1000-8000-00805f9b34fb');
@@ -107,14 +111,12 @@ document.getElementById('powerBtn').classList.add('on');
 document.getElementById('brightness').value=18;
 document.getElementById('brightness-value').textContent='18%';
 }catch(e){
-  console.error('Connection error:',e);
-  // If connection fails with saved device ID, clear it and try again
-  if (savedDeviceId && e.message.includes('No device selected')) {
-    localStorage.removeItem('bledomDeviceId');
-    hc();
-  } else {
-    alert('Connection error: '+e.message);
-  }
+    console.error('Connection error:',e);
+    if (e.message.includes('No device selected')) {
+        // User canceled pairing, no action needed
+    } else {
+        alert('Connection error: '+e.message);
+    }
 }
 }
 
