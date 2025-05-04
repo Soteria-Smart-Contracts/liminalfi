@@ -126,7 +126,7 @@ if(preview){setC(rgb.r,rgb.g,rgb.b);setB(b);
 
 function lockColor(e){
 const rect=e.target.getBoundingClientRect();
-const x=(e.clientX-rect.left)/rect.width,y=(e.clientY-rect.top)/rect.height,b=Math.round(100-(y*100)),rgb=hsvToRgb(x*360,1,1);
+const x=(e.clientX-rect.left)/rect.width,y=(e.clientY-rect.top)/rect.height,b = Math.round(100 - 100 * Math.pow(y, 0.4)), rgb = hsvToRgb(x * 360, 1, b / 100);
 setC(rgb.r,rgb.g,rgb.b);
 setB(b);
 document.getElementById('brightness').value=b;
