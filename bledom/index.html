@@ -41,6 +41,9 @@ let presets=JSON.parse(localStorage.getItem('bledomPresets'))||Array(6).fill().m
 let editingPreset=null,currentHoverColor={r:0,g:0,b:0},savedColor={r:0,g:0,b:0},savedBrightness=50;
 const sc=cmd=>c?.writeValue(cmd)??Promise.reject(),setC=(r,g,b)=>{clr={r,g,b};return sc(new Uint8Array([0x7e,0,5,3,r,g,b,0,0xef]));},setB=v=>sc(new Uint8Array([0x7e,0,1,v,0,0,0,0,0xef]));
 
+// Get saved device ID from localStorage
+const savedDeviceId = localStorage.getItem('bledomDeviceId');
+
 window.onload=()=>{
 document.getElementById(navigator.bluetooth?'interface':'nosupport').style.display='block';
 updatePresetDisplays();
@@ -65,7 +68,25 @@ clr={...savedColor};
 
 async function hc(){
 try{
-d=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:['0000fff0-0000-1000-8000-00805f9b34fb']});
+// Use saved device ID if available
+const options = {
+  optionalServices: ['0000fff0-0000-1000-8000-00805f9b34fb']
+};
+
+if (savedDeviceId) {
+  options.filters = [{ services: ['0000fff0-0000-1000-8000-00805f9b34fb'] }];
+  options.acceptAllDevices = false;
+} else {
+  options.acceptAllDevices = true;
+}
+
+d=await navigator.bluetooth.requestDevice(options);
+    
+// Save the device ID when first paired
+if (!savedDeviceId && d.id) {
+  localStorage.setItem('bledomDeviceId', d.id);
+}
+
 d.addEventListener('gattserverdisconnected',()=>{
 document.getElementById('connectBtn').style.display='block';
 document.getElementById('controls').style.display='none';
@@ -85,7 +106,16 @@ document.getElementById('powerBtn').textContent='Power Off';
 document.getElementById('powerBtn').classList.add('on');
 document.getElementById('brightness').value=18;
 document.getElementById('brightness-value').textContent='18%';
-}catch(e){console.error('Connection error:',e);alert('Connection error: '+e.message);}
+}catch(e){
+  console.error('Connection error:',e);
+  // If connection fails with saved device ID, clear it and try again
+  if (savedDeviceId && e.message.includes('No device selected')) {
+    localStorage.removeItem('bledomDeviceId');
+    hc();
+  } else {
+    alert('Connection error: '+e.message);
+  }
+}
 }
 
 function updateBrightness(v){
