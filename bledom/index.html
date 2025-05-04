@@ -3,7 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <title>BLEDOM Controller</title>
-<style>body{background:#0a192f;color:#e6f1ff;font-family:sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;margin:0}#color-rect{width:600px;height:300px;background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,1)),linear-gradient(to right,red,yellow,lime,cyan,blue,magenta,red);cursor:crosshair;margin:20px 0;position:relative;border-radius:8px}.preset-row{display:flex;justify-content:center;width:100%;margin-bottom:10px}.preset-container{position:relative;width:180px;height:50px;margin:5px;display:flex}.preset-color{width:75%;height:100%;cursor:pointer;border:2px solid #444;border-radius:6px 0 0 6px}.preset-brightness{width:25%;height:100%;cursor:pointer;border:2px solid #444;border-left:none;border-radius:0 6px 6px 0;background:linear-gradient(to bottom,white,black)}.edit-icon{position:absolute;right:5px;top:5px;background:#3b82f6;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;opacity:0;transition:opacity 0.2s}.preset-container:hover .edit-icon{opacity:1}button{padding:12px 24px;font-size:16px;border:none;border-radius:6px;cursor:pointer;margin:5px;transition:all 0.3s}#connectBtn{background:#3b82f6;color:white}.control-btn{min-width:120px;background:#444;color:white;transition:all 0.2s ease}.control-btn.on{background:#3b82f6;box-shadow:0 0 15px #3b82f6}.control-btn:hover{transform:scale(1.05);box-shadow:0 0 10px rgba(59,130,246,0.5)}.brightness-container{width:600px;margin:20px 0}.brightness-slider{-webkit-appearance:none;width:100%;height:8px;border-radius:4px;background:linear-gradient(to right,#000,#fff);outline:none;opacity:0.7;transition:opacity 0.2s}.brightness-slider:hover{opacity:1}.brightness-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;box-shadow:0 0 5px rgba(0,0,0,0.3)}.brightness-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#3b82f6;cursor:pointer;box-shadow:0 0 5px rgba(0,0,0,0.3)}.brightness-label{display:flex;justify-content:space-between;margin-bottom:5px;font-size:14px}.color-display{position:absolute;top:-40px;left:0;right:0;text-align:center;font-family:monospace;font-size:16px;background:rgba(10,25,47,0.8);padding:5px;border-radius:4px;opacity:0;transition:opacity 0.2s;cursor: default !important;pointer-events: none;}#color-rect:hover .color-display{opacity:1}</style>
+<style>
+    body {
+        background: #0a192f;
+        color: #e6f1ff;
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        transition: background-color 0.2s ease;
+    }
+    #color-rect {
+        width: 600px;
+        height: 300px;
+        background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1)), 
+                   linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red);
+        cursor: crosshair;
+        margin: 20px 0;
+        position: relative;
+        border-radius: 8px;
+    }
+    .preset-row {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .preset-container {
+        position: relative;
+        width: 180px;
+        height: 50px;
+        margin: 5px;
+        display: flex;
+    }
+    .preset-color {
+        width: 75%;
+        height: 100%;
+        cursor: pointer;
+        border: 2px solid #444;
+        border-radius: 6px 0 0 6px;
+    }
+    .preset-brightness {
+        width: 25%;
+        height: 100%;
+        cursor: pointer;
+        border: 2px solid #444;
+        border-left: none;
+        border-radius: 0 6px 6px 0;
+        background: linear-gradient(to bottom, white, black);
+    }
+    .edit-icon {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        background: #3b82f6;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    .preset-container:hover .edit-icon {
+        opacity: 1;
+    }
+    button {
+        padding: 12px 24px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+        transition: all 0.3s;
+    }
+    #connectBtn {
+        background: #3b82f6;
+        color: white;
+    }
+    .control-btn {
+        min-width: 120px;
+        background: #444;
+        color: white;
+        transition: all 0.2s ease;
+    }
+    .control-btn.on {
+        background: #3b82f6;
+        box-shadow: 0 0 15px #3b82f6;
+    }
+    .control-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(59,130,246,0.5);
+    }
+    .brightness-container {
+        width: 600px;
+        margin: 20px 0;
+    }
+    .brightness-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(to right, #000, #fff);
+        outline: none;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+    }
+    .brightness-slider:hover {
+        opacity: 1;
+    }
+    .brightness-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .brightness-slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    .brightness-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 14px;
+    }
+    .color-display {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: monospace;
+        font-size: 16px;
+        background: rgba(10,25,47,0.8);
+        padding: 5px;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.2s;
+        cursor: default !important;
+        pointer-events: none;
+    }
+    #color-rect:hover .color-display {
+        opacity: 1;
+    }
+    .lock-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .lock-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        background: #444;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .lock-btn.on {
+        background: #3b82f6;
+        box-shadow: 0 0 10px rgba(59,130,246,0.5);
+    }
+    .lock-btn:hover {
+        transform: scale(1.05);
+    }
+</style>
 </head>
 <body>
 <div id="nosupport" style="display:none"><h1>No Bluetooth</h1><p>Enable in chrome://flags</p></div>
@@ -17,6 +198,10 @@
 </div>
 <div id="color-rect" onmouseenter="saveCurrentColor()" onmousemove="throttlePreview(event)" onmouseleave="restoreSavedColor()" onclick="lockColor(event)">
 <div class="color-display" id="colorDisplay">R: 0 G: 0 B: 0</div>
+</div>
+<div class="lock-buttons">
+    <button id="lockColorBtn" class="lock-btn" onclick="toggleLock('color')">Lock Color</button>
+    <button id="lockBrightnessBtn" class="lock-btn" onclick="toggleLock('brightness')">Lock Brightness</button>
 </div>
 <div class="preset-row">
 <div class="preset-container" onclick="applyPreset(0)"><div class="preset-color" id="preset1-color"></div><div class="preset-brightness" id="preset1-brightness"></div><div class="edit-icon" onclick="startEditingPreset(0)">✎</div></div>
@@ -44,14 +229,36 @@
         brightness: 50
     }));
     let editingPreset = null, currentHoverColor = { r: 0, g: 0, b: 0 };
+    let locked = { color: false, brightness: false };
     
     const sc = cmd => c?.writeValue(cmd) ?? Promise.reject(),
         setC = (r, g, b) => {
+            currentClrState.r = r;
+            currentClrState.g = g;
+            currentClrState.b = b;
+            updateBackgroundColor();
             return sc(new Uint8Array([0x7e, 0, 5, 3, r, g, b, 0, 0xef]));
         },
         setB = v => {
+            currentClrState.brightness = v;
             return sc(new Uint8Array([0x7e, 0, 1, v, 0, 0, 0, 0, 0xef]));
         };
+
+    function updateBackgroundColor() {
+        // Create a darker version of the current color for background
+        const darkenFactor = 0.1;
+        const r = Math.floor(currentClrState.r * darkenFactor);
+        const g = Math.floor(currentClrState.g * darkenFactor);
+        const b = Math.floor(currentClrState.b * darkenFactor);
+        document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+    
+    function toggleLock(type) {
+        locked[type] = !locked[type];
+        const btn = document.getElementById(`lock${type.charAt(0).toUpperCase() + type.slice(1)}Btn`);
+        btn.classList.toggle('on');
+        btn.textContent = locked[type] ? `Unlock ${type}` : `Lock ${type}`;
+    }
     
     window.onload = () => {
         document.getElementById(navigator.bluetooth ? 'interface' : 'nosupport').style.display = 'block';
@@ -64,16 +271,20 @@
     
     function saveCurrentColor() {
         if (!preview || !pwr) return;
-        // Current state is always maintained in currentClrState
         currentClrState.brightness = parseInt(document.getElementById('brightness').value);
     }
     
     function restoreSavedColor() {
-        if (!preview || !pwr) return;
-        setC(currentClrState.r, currentClrState.g, currentClrState.b);
-        setB(currentClrState.brightness);
-        document.getElementById('brightness').value = currentClrState.brightness;
-        document.getElementById('brightness-value').textContent = `${currentClrState.brightness}%`;
+        if (!preview || !pwr || (locked.color && locked.brightness)) return;
+        
+        if (!locked.color) {
+            setC(currentClrState.r, currentClrState.g, currentClrState.b);
+        }
+        if (!locked.brightness) {
+            setB(currentClrState.brightness);
+            document.getElementById('brightness').value = currentClrState.brightness;
+            document.getElementById('brightness-value').textContent = `${currentClrState.brightness}%`;
+        }
     }
     
     async function hc() {
@@ -102,6 +313,7 @@
             document.getElementById('powerBtn').classList.add('on');
             document.getElementById('brightness').value = 18;
             document.getElementById('brightness-value').textContent = '18%';
+            updateBackgroundColor();
         } catch (e) {
             console.error('Connection error:', e);
             alert('Connection error: ' + e.message);
@@ -109,6 +321,7 @@
     }
     
     function updateBrightness(v) {
+        if (locked.brightness) return;
         setB(v);
         document.getElementById('brightness-value').textContent = `${v}%`;
         if (editingPreset !== null) {
@@ -138,10 +351,12 @@
         currentHoverColor = rgb;
         document.getElementById('colorDisplay').textContent = `R: ${Math.round(rgb.r)} G: ${Math.round(rgb.g)} B: ${Math.round(rgb.b)}`;
         if (preview) {
-            setC(rgb.r, rgb.g, rgb.b);
-            setB(b);
-            document.getElementById('brightness').value = b;
-            document.getElementById('brightness-value').textContent = `${b}%`;
+            if (!locked.color) setC(rgb.r, rgb.g, rgb.b);
+            if (!locked.brightness) {
+                setB(b);
+                document.getElementById('brightness').value = b;
+                document.getElementById('brightness-value').textContent = `${b}%`;
+            }
         }
     }
     
@@ -151,21 +366,34 @@
             y = (e.clientY - rect.top) / rect.height,
             b = Math.round(y < 0.5 ? 100 - 200 * y * y : 200 * (1 - y) * (1 - y)),
             rgb = hsvToRgb(x * 360, 1, 1);
-        currentClrState.r = rgb.r;
-        currentClrState.g = rgb.g;
-        currentClrState.b = rgb.b;
-        currentClrState.brightness = b;
-        setC(rgb.r, rgb.g, rgb.b);
-        setB(b);
-        document.getElementById('brightness').value = b;
-        document.getElementById('brightness-value').textContent = `${b}%`;
+        
+        if (!locked.color) {
+            currentClrState.r = rgb.r;
+            currentClrState.g = rgb.g;
+            currentClrState.b = rgb.b;
+            setC(rgb.r, rgb.g, rgb.b);
+        }
+        
+        if (!locked.brightness) {
+            currentClrState.brightness = b;
+            setB(b);
+            document.getElementById('brightness').value = b;
+            document.getElementById('brightness-value').textContent = `${b}%`;
+        }
+        
         if (editingPreset !== null) {
-            presets[editingPreset] = { r: rgb.r, g: rgb.g, b: rgb.b, brightness: b };
+            presets[editingPreset] = { 
+                r: rgb.r, 
+                g: rgb.g, 
+                b: rgb.b, 
+                brightness: b 
+            };
             updatePresetDisplays();
             document.getElementById(`preset${editingPreset + 1}-color`).style.borderColor = '#444';
             editingPreset = null;
             savePresets();
         }
+        
         cooldown = 1;
         setTimeout(() => cooldown = 0, 5000);
     }
@@ -173,14 +401,25 @@
     function applyPreset(i) {
         if (editingPreset !== null) return;
         const p = presets[i];
-        setC(p.r, p.g, p.b);
-        setB(p.brightness);
-        currentClrState = { r: p.r, g: p.g, b: p.b, brightness: p.brightness };
+        
+        if (!locked.color) {
+            setC(p.r, p.g, p.b);
+            currentClrState.r = p.r;
+            currentClrState.g = p.g;
+            currentClrState.b = p.b;
+        }
+        
+        if (!locked.brightness) {
+            setB(p.brightness);
+            currentClrState.brightness = p.brightness;
+            document.getElementById('brightness').value = p.brightness;
+            document.getElementById('brightness-value').textContent = `${p.brightness}%`;
+        }
+        
         pwr = 1;
         document.getElementById('powerBtn').textContent = 'Power Off';
         document.getElementById('powerBtn').classList.add('on');
-        document.getElementById('brightness').value = p.brightness;
-        document.getElementById('brightness-value').textContent = `${p.brightness}%`;
+        updateBackgroundColor();
     }
     
     function updatePresetDisplays() {
@@ -238,6 +477,6 @@
             default: return { r: v * 255, g: p * 255, b: q * 255 };
         }
     }
-    </script>
+</script>
 </body>
 </html>
