@@ -119,7 +119,9 @@ const x=(e.clientX-rect.left)/rect.width,y=(e.clientY-rect.top)/rect.height,b=Ma
 currentHoverColor=rgb;
 document.getElementById('colorDisplay').textContent=`R: ${Math.round(rgb.r)} G: ${Math.round(rgb.g)} B: ${Math.round(rgb.b)}`;
 if(preview){setC(rgb.r,rgb.g,rgb.b);setB(b);
-}
+    document.getElementById('brightness').value=b;
+    document.getElementById('brightness-value').textContent=`${b}%`;
+    }
 }
 
 function lockColor(e){
