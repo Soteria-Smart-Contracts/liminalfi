@@ -50,7 +50,6 @@
             return sc(new Uint8Array([0x7e, 0, 5, 3, r, g, b, 0, 0xef]));
         },
         setB = v => {
-            currentClrState.brightness = v;
             return sc(new Uint8Array([0x7e, 0, 1, v, 0, 0, 0, 0, 0xef]));
         };
     
