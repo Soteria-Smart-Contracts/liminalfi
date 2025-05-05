@@ -72,7 +72,7 @@
         const btn = document.getElementById(`lock${type.charAt(0).toUpperCase() + type.slice(1)}Btn`);
         btn.classList.toggle('on');
         btn.textContent = locked[type] ? `Unlock ${type}` : `Lock ${type}`;
-    }
+    } 
     
     window.onload = () => {
         document.getElementById(navigator.bluetooth ? 'interface' : 'nosupport').style.display = 'block';
